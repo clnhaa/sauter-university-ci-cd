@@ -1,29 +1,30 @@
-name: CI/CD for Sauter University
+name: CI
 
 on:
   push:
-    branches:
-      ['main']
+    branches: [main]
 
 jobs:
-  build-and-push:
+  CI:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out the repository
-      uses: actions/checkout@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
+    - uses: actions/checkout@v3
+    
+    - name: Docker login
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v3
       with:
+        context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/sauter-university:latest
+        tags: |
+          clnhaa/sauter-university:v1
+          clnhaa/sauter-university:latest
+      
+     
+   
